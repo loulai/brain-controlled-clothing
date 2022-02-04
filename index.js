@@ -28,13 +28,10 @@ const verifyEnvs = (email, password, deviceId) => {
 
   var express = require('express')
   var app = express()
-  var prob = 0.0;
+  var prob = 0.5;
+  var calmProb;
+  var focusProb;
 
-  // respond with calm score when a GET request is made to the homepage
-  app.get('/', function (req, res) {
-    res.json({calmScore: prob})
-
-  })
 
   // Instantiating a notion
   const notion = new Notion({
@@ -54,20 +51,36 @@ const verifyEnvs = (email, password, deviceId) => {
       });
     console.log("Logged in");
 
+    //////// Begin Subscriptions ---------------------
+
     // Calm subscription
     notion.calm().subscribe((calm) => {
-        prob = calm.probability;
+        calmProb = calm.probability;
       });
-    
 
-    // Kinesis
-    const mind = new Notion();
-
-    mind.kinesis("disappear").subscribe(intent => {
-      // Switch light off/on
-      //light.togglePower();
-      prob = intent.probability;
+    // Focus subscription
+    notion.focus().subscribe(focus => {
+      focusProb = focus.probability;
     });
+
+
+    // Kinesis subcription
+    //const mind = new Notion();
+    // notion.kinesis("disappear").subscribe(intent => {
+    //   // Switch light off/on
+    //   //light.togglePower();
+    //   prob = intent.probability;
+    //   //console.log(intent)
+    //   //console.log(intent.predictions[0].probability)
+    // });
+
+    console.log(`calmProb: ${calmProb}, focusProb: ${focusProb}`);
+
+      // respond with calm score when a GET request is made to the homepage
+  app.get('/', function (req, res) {
+    //res.send(`{calmProb: ${calmProb}},{focusProb: ${focusProb}}`);
+    res.send(`${calmProb},${focusProb}`);
+  })
 
       app.listen(3000)
   };
