@@ -39,7 +39,7 @@ const verifyEnvs = (email, password, deviceId) => {
   
   console.log(`${email} attempting to authenticate to ${deviceId}`);
 
-  var express = require('express')
+  //var express = require('express')
   var app = express()
   var prob = 0.5;
   var calmProb;
@@ -64,20 +64,20 @@ const verifyEnvs = (email, password, deviceId) => {
       });
     console.log("Logged in");
 
-    //////// Begin Subscriptions ---------------------
+    // ----------------------------- Subscriptions -----------------------------
 
-    // Calm subscription
+    // Calm Subscription
     notion.calm().subscribe((calm) => {
         calmProb = calm.probability;
       });
 
-    // Focus subscription
+    // Focus Subscription
     notion.focus().subscribe(focus => {
       focusProb = focus.probability;
     });
 
 
-    // Kinesis subcription
+    // Kinesis Subcription
     //const mind = new Notion();
     // notion.kinesis("disappear").subscribe(intent => {
     //   // Switch light off/on
@@ -86,16 +86,18 @@ const verifyEnvs = (email, password, deviceId) => {
     //   //console.log(intent)
     //   //console.log(intent.predictions[0].probability)
     // });
+ 
+    console.log(`calmProb: ${calmProb}, focusProb: ${focusProb}`); // for some reason, this is always undefined, even when it works
 
-    console.log(`calmProb: ${calmProb}, focusProb: ${focusProb}`);
+  // --------------------------------------------------------------------------
 
-      // respond with calm score when a GET request is made to the homepage
+  // GET Request
+  // respond with calm and focus score when a GET request is made to the homepage
   app.get('/', function (req, res) {
-    //res.send(`{calmProb: ${calmProb}},{focusProb: ${focusProb}}`);
+    //res.send(`{calmProb: ${calmProb}},{focusProb: ${focusProb}}`); 
     res.send(`${calmProb},${focusProb}`);
   })
-
-      app.listen(process.env.PORT || 5000)
+      app.listen(process.env.PORT || 5000);
   };
 
   main();
