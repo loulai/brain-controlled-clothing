@@ -95,7 +95,7 @@ const verifyEnvs = (email, password, deviceId) => {
     res.send(`${calmProb},${focusProb}`);
   })
 
-      app.listen(PORT)
+      app.listen(process.env.PORT || 5000)
   };
 
   main();
