@@ -2,19 +2,24 @@
   "name": "hello-world",
   "version": "1.0.0",
   "description": "My first application using Notion",
+  "engines": {
+    "node": "14.x"
+  },
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "notion"
-  ],
   "author": "Louise Lai",
   "license": "MIT",
   "dependencies": {
     "@neurosity/notion": "^5.7.0",
     "dotenv": "^12.0.3",
+    "ejs": "^3.1.5",
     "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "got": "^11.3.0",
+    "tape": "^4.7.0"
   }
 }
