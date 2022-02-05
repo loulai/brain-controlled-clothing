@@ -1,32 +1,19 @@
-const express = require('express')
-const path = require('path')
-const PORT = process.env.PORT || 5008
-
-// express()
-//   .use(express.static(path.join(__dirname, 'public')))
-//   .set('views', path.join(__dirname, 'views'))
-//   .set('view engine', 'ejs')
-//   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
-  //  .get('/', (req, res) => res.render('pages/index'))
-
-
 // Dependencies
 const { Notion } = require("@neurosity/notion");
 require("dotenv").config();
 
-
 // Authentication
-const deviceId = process.env.DEVICE_ID || "";
-const email = process.env.EMAIL || "";
-const password = process.env.PASSWORD || "";
+const deviceId = "93ef187ea107d9a1b93baa6875eaf458";//"efd3f5d13fcaf2880b5f48615c6985ca";//process.env.DEVICE_ID  "";
+const email = "hello@vrhuman.com";//"louiseylai@gmail.com"*/;//process.env.EMAIL  "";
+const password = "NewAdventure";//"ARHouse";//process.env.PASSWORD  "";
 
 const verifyEnvs = (email, password, deviceId) => {
     const invalidEnv = (env) => {
-      return env === "" || env === 0;
+      return env === ""  env === 0;
     };
     if (
-      invalidEnv(email) ||
-      invalidEnv(password) ||
+      invalidEnv(email) 
+      invalidEnv(password) 
       invalidEnv(deviceId)
     ) {
       console.error(
@@ -36,15 +23,12 @@ const verifyEnvs = (email, password, deviceId) => {
     }
   };
   verifyEnvs(email, password, deviceId);
-  
-  console.log(`${email} attempting to authenticate to ${deviceId}`);
 
-  //var express = require('express')
+  console.log(${email} attempting to authenticate to ${deviceId});
+
+  var express = require('express')
   var app = express()
-  var prob = 0.5;
-  var calmProb;
-  var focusProb;
-
+  var prob = 0.0;
 
   // Instantiating a notion
   const notion = new Notion({
@@ -64,40 +48,31 @@ const verifyEnvs = (email, password, deviceId) => {
       });
     console.log("Logged in");
 
-    // ----------------------------- Subscriptions -----------------------------
-
-    // Calm Subscription
+    // Calm subscription
     notion.calm().subscribe((calm) => {
-        calmProb = calm.probability;
+        prob = calm.probability;
       });
 
-    // Focus Subscription
-    notion.focus().subscribe(focus => {
-      focusProb = focus.probability;
+    // Focus subscription
+    /notion.focus().subscribe((calm) => {
+      prob = calm.probability;
+    });/
+
+    notion.predictions("disappear").subscribe(prediction => {
+      // Switch light off/on
+      //light.togglePower();
+      prob = prediction.probability;
+      console.log(prob)
     });
 
+      // respond with calm score when a GET request is made to the homepage
+    app.get('/', function (req, res) {
+      res.json({kinesisScore: prob})
 
-    // Kinesis Subcription
-    //const mind = new Notion();
-    // notion.kinesis("disappear").subscribe(intent => {
-    //   // Switch light off/on
-    //   //light.togglePower();
-    //   prob = intent.probability;
-    //   //console.log(intent)
-    //   //console.log(intent.predictions[0].probability)
-    // });
- 
-    console.log(`calmProb: ${calmProb}, focusProb: ${focusProb}`); // for some reason, this is always undefined, even when it works
+    })
 
-  // --------------------------------------------------------------------------
-
-  // GET Request
-  // respond with calm and focus score when a GET request is made to the homepage
-  app.get('/', function (req, res) {
-    //res.send(`{calmProb: ${calmProb}},{focusProb: ${focusProb}}`); 
-    res.send(`${calmProb},${focusProb}`);
-  })
-      app.listen(PORT);
+      app.listen(3000)
   };
 
   main();
+e
