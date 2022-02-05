@@ -1,3 +1,7 @@
+const express = require('express')
+const path = require('path')
+const PORT = process.env.PORT || 3005
+
 // Dependencies
 const { Notion } = require("@neurosity/notion");
 require("dotenv").config();
@@ -9,12 +13,12 @@ const password = "NewAdventure";//"ARHouse";//process.env.PASSWORD  "";
 
 const verifyEnvs = (email, password, deviceId) => {
     const invalidEnv = (env) => {
-      return env === ""  env === 0;
+      return env === "" || env === 0;
     };
     if (
-      invalidEnv(email) 
-      invalidEnv(password) 
-      invalidEnv(deviceId)
+      invalidEnv(email) ||
+      invalidEnv(password) || 
+      invalidEnv(deviceId) 
     ) {
       console.error(
         "Please verify deviceId, email and password are in .env file, quitting..."
@@ -24,9 +28,9 @@ const verifyEnvs = (email, password, deviceId) => {
   };
   verifyEnvs(email, password, deviceId);
 
-  console.log(${email} attempting to authenticate to ${deviceId});
+  console.log(`${email} attempting to authenticate to ${deviceId}`);
 
-  var express = require('express')
+  //var express = require('express')
   var app = express()
   var prob = 0.0;
 
@@ -48,15 +52,16 @@ const verifyEnvs = (email, password, deviceId) => {
       });
     console.log("Logged in");
 
+    // ----------------------------- Subscriptions -----------------------------
     // Calm subscription
     notion.calm().subscribe((calm) => {
         prob = calm.probability;
       });
 
     // Focus subscription
-    /notion.focus().subscribe((calm) => {
-      prob = calm.probability;
-    });/
+    // notion.focus().subscribe((calm) => {
+    //   prob = calm.probability;
+    // });
 
     notion.predictions("disappear").subscribe(prediction => {
       // Switch light off/on
@@ -65,14 +70,15 @@ const verifyEnvs = (email, password, deviceId) => {
       console.log(prob)
     });
 
+    // --------------------------------------------------------------------------
+
       // respond with calm score when a GET request is made to the homepage
     app.get('/', function (req, res) {
       res.json({kinesisScore: prob})
 
     })
 
-      app.listen(3000)
+      app.listen(PORT)
   };
 
   main();
-e
